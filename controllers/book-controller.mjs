@@ -2,7 +2,24 @@ import Book from '../models/book.mjs'
 
 
 const getAllBooks = async (req, res) => {
-};
+    try {
+      const books = await Book.find();
+  
+      res.status(200).json({
+        success: true,
+        message: "Books retrieved successfully",
+        data: books,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        message: "Something went wrong",
+        error: error.message,
+      });
+    }
+  };
+  
 
 const getSingleBookById = async (req, res) => {
     try {
@@ -88,7 +105,33 @@ const updateBook = async (req, res) => {
     }
 };
 
-const deleteBook = async (req, res) => {};
+const deleteBook = async (req, res) => {
+    try {
+        const inputId = req.params.id;
+        const deleteBook = await Book.findByIdAndDelete(inputId);
+
+        if(!deleteBook) {
+            return res.status(404).json({
+                success: false,
+                message: "Unaable to delete book, input a valid ID."
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Book deleted Successfully",
+            data: deleteBook
+        })
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: error.message,
+        })
+    }
+};
 
 
 const bookController = {getAllBooks, getSingleBookById, addNewBook, updateBook, deleteBook};
