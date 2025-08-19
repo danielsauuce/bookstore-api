@@ -23,13 +23,13 @@ const getAllBooks = async (req, res) => {
 
 const getSingleBookById = async (req, res) => {
     try {
-        const inputId = req.params.inputId
+        const inputId = req.params.id
         const getSingleBook = await Book.findById(inputId);
 
         if(!getSingleBook) {
             return res.status(404).json({
                 success: false,
-                message: "Unable to retrieve Book by that Id, try another valid Id",
+                message: "Invalid id, try again!",
             })
         }
 
@@ -113,7 +113,7 @@ const deleteBook = async (req, res) => {
         if(!deleteBook) {
             return res.status(404).json({
                 success: false,
-                message: "Unaable to delete book, input a valid ID."
+                message: "Unable to delete book, input a valid ID."
             })
         }
 
